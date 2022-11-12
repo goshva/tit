@@ -96,3 +96,23 @@ function init() {
       )
   });
 }
+document.getElementById("send").addEventListener("click", function (e) {
+    e.preventDefault();
+    if (getCookie('@') ==''){
+        var from = prompt("@?").toLowerCase();
+        setCookie('@',from,365)
+    }
+    var token = "5430048154:AAEFptLp8IdbKirOYJzzM3ekyTd2ibVLMNc";
+    var chat_id = '190404167';
+    var link = `https://goshva.github.io/qrConstr/?${letters}`
+    var link = `http://localhost:1313/?${letters}`
+    var msg = `${link} from ${getCookie('@')}`
+    var url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${msg}&parse_mode=html`;
+
+    fetch(url).then((response) => {
+        return response.json();
+    }).then((data) => {
+        console.log(data);
+        window.location.href = link;
+    });
+})
