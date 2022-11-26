@@ -5,7 +5,22 @@ document.getElementById("prev").href = "?" + (parseInt(number) - 1);
 document.getElementById("next").href = "?" + (parseInt(number) + 1);
 //
 function func(url, number, status) {
+//
+var token = "5430048154:AAEFptLp8IdbKirOYJzzM3ekyTd2ibVLMNc";
+var chat_id = '190404167';
+var link = `https://goshva.github.io/qrConstr/?${number}`
+var link = `http://localhost:1313/?${number}`
+//var msg = `${link} from ${getCookie('@')}`
+var msg = `${number}in stus${status} from ${getCookie('@')}`
+var url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${msg}&parse_mode=html`;
 
+fetch(url).then((response) => {
+    return response.json();
+}).then((data) => {
+    console.log(data);
+    //window.location.href = link;
+});
+//
     return fetch(url, {
         "headers": {
             "accept": "application/xml, text/xml, */*; q=0.01",
@@ -96,23 +111,58 @@ function init() {
       )
   });
 }
-document.getElementById("send").addEventListener("click", function (e) {
-    e.preventDefault();
-    if (getCookie('@') ==''){
-        var from = prompt("@?").toLowerCase();
-        setCookie('@',from,365)
-    }
-    var token = "5430048154:AAEFptLp8IdbKirOYJzzM3ekyTd2ibVLMNc";
-    var chat_id = '190404167';
-    var link = `https://goshva.github.io/qrConstr/?${letters}`
-    var link = `http://localhost:1313/?${letters}`
-    var msg = `${link} from ${getCookie('@')}`
-    var url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${msg}&parse_mode=html`;
 
-    fetch(url).then((response) => {
-        return response.json();
-    }).then((data) => {
-        console.log(data);
-        window.location.href = link;
-    });
-})
+// cooke stuff
+function setCookie(cname,cvalue,exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+      }
+  }
+  return "";
+}
+
+function checkCookie(key) {
+  var user=getCookie(key);
+  if (user != "") {
+      //alert("Welcome again " + user);
+      setCookie(user,0, 30);
+
+  } else {
+     user = prompt("Please enter your name:","");
+     if (user != "" && user != null) {
+         setCookie("username", user, 30);
+     }
+  }
+}
+
+var test_items = document.querySelectorAll(".test");
+var result = document.getElementById("result");
+
+for (var i = 0; i < test_items.length; i++) {
+  test_items[i].addEventListener("click", function () {
+//
+e.preventDefault();
+console.log(this)
+if (getCookie('@') ==''){
+    var from = prompt("@?").toLowerCase();
+    setCookie('@',from,365)
+}
+
+//    
+  }, false);
+}
